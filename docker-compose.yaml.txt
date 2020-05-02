@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  mysql_os:
+    image: mysql:5.7
+    volumes:
+      - mysql_vol_new:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: pragati
+      MYSQL_PASSWORD: redhat
+      MYSQL_DATABASE: mydb
+
+  drupal_os:
+    image: drupal:8.8.5-apache
+    restart: always
+    depends_on:
+      - mysql_os
+    ports:
+      - '8081:80'
+    environment:
+      some-mysql: mysql_os
+      MYSQL_USER: pragati
+      MYQSL_PASSWORD: redhat
+      MYSQL_DATABASE: mydb
+    volumes:
+      - drupal_vol_new:/var/www/html
+volumes:
+  drupal_vol_new:
+  mysql_vol_new:
